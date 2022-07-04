@@ -1,12 +1,12 @@
 import {useState} from 'react'
 
-const storage = sessionStorage // can be replaced by localStorage
+// const storage = sessionStorage // can be replaced by localStorage
+const storage = localStorage
 
 function useLocalToken() {
 
   const getToken = () => {
-    const tokenString = storage.getItem('token')
-    // const userToken = JSON.parse(tokenString)
+    const tokenString = storage.getItem('userInfo')
     return JSON.parse(tokenString)
   }
 
@@ -14,11 +14,11 @@ function useLocalToken() {
 
   const saveToken = userToken => {
     if (!userToken) {
-      storage.removeItem('token')
+      storage.removeItem('userInfo')
       setLocalToken(null)
       return
     }
-    storage.setItem('token', JSON.stringify(userToken))
+    storage.setItem('userInfo', JSON.stringify({...getToken() }))
     setLocalToken(userToken.token)
   }
 
