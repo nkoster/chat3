@@ -1,0 +1,10 @@
+.ChatUsers {
+    position: absolute;
+    left: calc(100% - var(--user-list-width));
+    top: 0;
+    width: var(--user-list-width);
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: right;
+}

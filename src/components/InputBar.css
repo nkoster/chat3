@@ -1,0 +1,16 @@
+.InputBar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: var(--input-bar-height);
+    bottom: 0;
+    border-top: var(--border-style);
+}
+
+.InputBar input {
+    border: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 2rem;
+    padding: 1rem;
+}

@@ -1,3 +1,16 @@
+:root {
+  --header-height: 4rem;
+  --input-bar-height: 4rem;
+  --user-list-width: 18rem;
+  --border-style: solid 1px silver;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

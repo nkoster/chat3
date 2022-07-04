@@ -1,0 +1,20 @@
+.ChatLines {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: calc(100% - var(--user-list-width));
+    border-right: var(--border-style);
+    display: flex;
+    /*justify-content: flex-end;*/
+    flex-direction: column;
+    overflow: scroll;
+    height: 100%;
+}
+
+.ChatLine {
+    width: 100%;
+    text-align: left;
+    font-size: 2rem;
+    padding: 1rem;
+}

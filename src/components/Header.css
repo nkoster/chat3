@@ -1,0 +1,7 @@
+.Header {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: var(--header-height);
+    border-bottom: var(--border-style);
+}

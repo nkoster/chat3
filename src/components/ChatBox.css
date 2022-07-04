@@ -1,0 +1,8 @@
+.ChatBox {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: var(--header-height);
+    height: calc(100% - var(--header-height) - var(--input-bar-height));
+    overflow: hidden;
+}
