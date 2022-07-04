@@ -11,7 +11,6 @@ function App() {
 
   const {localToken, setLocalToken} = useLocalToken()
   const [token, setToken] = useState(localToken)
-  console.log(localToken)
 
   useEffect(() => {
     setLocalToken(token)
