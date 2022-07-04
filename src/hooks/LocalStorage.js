@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import {useState} from 'react'
 
 export default function useLocalStorage(key, initialValue) {
 
@@ -28,5 +28,5 @@ export default function useLocalStorage(key, initialValue) {
     }
   }
 
-  return {storedValue, setValue}
+  return {storedValue, setStoredValue: setValue}
 }
