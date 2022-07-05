@@ -17,7 +17,10 @@ const UsersContext = createContext(initialState)
 const UsersUpdateContext = createContext()
 
 export function useUsersState() {
-  return [useContext(UsersContext), useContext(UsersUpdateContext)]
+  return {
+    usersState: useContext(UsersContext),
+    setUsersState: useContext(UsersUpdateContext)
+  }
 }
 
 export default function UsersStateProvider({children}) {
