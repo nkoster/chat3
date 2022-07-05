@@ -4,4 +4,8 @@
     right: 0;
     height: var(--header-height);
     border-bottom: var(--border-style);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
 }
