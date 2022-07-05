@@ -11,7 +11,10 @@ const ChatContext = createContext(initialState)
 const ChatUpdateContext = createContext()
 
 export function useChatState() {
-  return [useContext(ChatContext), useContext(ChatUpdateContext)]
+  return {
+    chatState: useContext(ChatContext),
+    setChatState: useContext(ChatUpdateContext)
+  }
 }
 
 export default function ChatStateProvider({children}) {

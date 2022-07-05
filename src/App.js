@@ -6,15 +6,29 @@ import Header from './components/Header'
 import ChatBox from './components/ChatBox'
 import InputBar from './components/InputBar'
 import useLocalToken from './hooks/useLocalToken'
+import {useWebsocket} from './context/WebsocketContext'
+import useLocalStorage from './hooks/LocalStorage'
 
 function App() {
 
   const {localToken, setLocalToken} = useLocalToken()
   const [token, setToken] = useState(localToken)
+  const {websocket} = useWebsocket()
+  const {storedValue} = useLocalStorage('userInfo')
 
   useEffect(() => {
-    setLocalToken(token)
+    if (token) setLocalToken(token)
+    websocket.on('expired', () => {
+      console.log('EXPIRED')
+      setToken(null)
+    })
   }, [token, setLocalToken])
+
+  useEffect(() => {
+    if (token) websocket.emit('join', {
+      token, channel: storedValue.channel
+    })
+  }, [storedValue])
 
   if (!token) {
     return <Login setToken={setToken}/>

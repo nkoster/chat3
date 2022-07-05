@@ -16,28 +16,36 @@ async function loginUser(credentials) {
 function Login({setToken}) {
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
+  const [channel, setChannel] = useState()
   const {setStoredValue} = useLocalStorage('userInfo')
 
   const handleSubmit = async e => {
     e.preventDefault()
     const {accessToken} = await loginUser({
-      username,
-      password
+      channel, username, password
     })
     setToken(accessToken)
-    setStoredValue({username, accessToken})
+    setStoredValue({channel, username, accessToken})
+  }
+
+  function handleOnchange(event, callback) {
+    callback(event.target.value)
   }
 
   return (
     <div className='Login'>
       <form onSubmit={handleSubmit}>
         <label>
+          <p>Channel</p>
+          <input type="text" onChange={e => handleOnchange(e, setChannel)} />
+        </label>
+        <label>
           <p>Username</p>
-          <input type="text" onChange={e => setUsername(e.target.value)} />
+          <input type="text" onChange={e => handleOnchange(e, setUsername)} />
         </label>
         <label>
           <p>Password</p>
-          <input type="password" onChange={e => setPassword(e.target.value)}/>
+          <input type="password" onChange={e => handleOnchange(e, setPassword)}/>
         </label>
         <div>
           <button type="submit">Submit</button>

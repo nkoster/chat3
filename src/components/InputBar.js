@@ -1,16 +1,23 @@
 import './InputBar.css'
 import {useChatState} from '../context/ChatContext'
+import {useWebsocket} from '../context/WebsocketContext'
+import useLocalStorage from '../hooks/LocalStorage'
 
 export default function InputBar() {
 
-  const [chatState, setChatState] = useChatState()
+  const {chatState, setChatState} = useChatState()
+  const {websocket} = useWebsocket()
+  const {storedValue} = useLocalStorage('userInfo')
 
   function handleInput(e) {
     if (e.key === 'Enter') {
       setChatState({
         ...chatState,
-        chatLines: [...chatState.chatLines, e.target.value],
         message: ''
+      })
+      websocket.emit('message', {
+        data: e.target.value,
+        channel: storedValue.channel
       })
     }
   }
