@@ -8,4 +8,5 @@
     flex-direction: column;
     justify-content: right;
     padding: .2rem;
+    text-align: right;
 }
