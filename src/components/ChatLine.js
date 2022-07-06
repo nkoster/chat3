@@ -1,10 +1,10 @@
 import './ChatLine.css'
 
-function ChatLine({key, line}) {
+function ChatLine({mykey, line}) {
   return (
     <div className='ChatLine'>
       <div className='ChatLineUser'>{line.user}:</div>
-      <div className='ChatLineData' key={key}>{line.data}</div>
+      <div className='ChatLineData' key={mykey}>{line.data}</div>
       <div className='ChatLineTime'>{line.time}</div>
     </div>
   )
