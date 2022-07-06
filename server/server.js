@@ -56,7 +56,6 @@ io.on('connection', socket => {
         channels.push({
           name: channel.channel,
           user: socket.username,
-          // socketId: socket.id
         })
         io.emit('newlist', channels.filter(chan => chan.name === channel.channel))
       })
@@ -66,11 +65,19 @@ io.on('connection', socket => {
     console.log('join', channel.channel, data)
   })
 
+
   socket.on('message', msg => {
     if (msg.data) {
       console.log(socket.username, msg, socket.rooms.has(msg.channel))
+      const d = new Date()
+      const timeStamp = `${d.getHours()}:${d.getMinutes() < 10 ? '0' : ''}${
+        d.getMinutes()}.${d.getSeconds() < 10 ? '0' : ''}${d.getSeconds()}`
       if (socket.rooms.has(msg.channel)) {
-        io.to(msg.channel).emit('broadcast', {...msg, user: socket.username})
+        io.to(msg.channel).emit('broadcast', {
+          ...msg,
+          user: socket.username,
+          time: timeStamp
+        })
       }
     }
   })
@@ -86,7 +93,7 @@ io.on('connection', socket => {
 })
 
 setInterval(() => {
-  const aap = Array.from(io.sockets.sockets).map(socket => {
+  const arr = Array.from(io.sockets.sockets).map(socket => {
     return {
       name: socket[1].channel,
       user: socket[1].username
@@ -95,8 +102,8 @@ setInterval(() => {
   .filter(item => {
     return item.name && item.user
   })
-  channels = [...aap]
-  // console.log(aap)
+  channels = [...arr]
+  // console.log(channels)
 }, 3000)
 
 app.use(express.json())
