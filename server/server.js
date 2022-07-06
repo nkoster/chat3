@@ -14,7 +14,7 @@ const server = http.createServer(app)
 const {Server} = require('socket.io')
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "*",
     methods: ["GET", "POST"]
   }})
 const cors = require('cors')
@@ -27,6 +27,8 @@ let users = require('./db.json')
 let refreshTokens = []
 
 app.use(cors())
+
+app.use(express.static('public'))
 
 io.on('connection', socket => {
 
