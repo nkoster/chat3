@@ -3,13 +3,7 @@ import './ChatUsers.css'
 import {useWebsocket} from '../context/WebsocketContext'
 import useLocalStorage from '../hooks/LocalStorage'
 import {useUsersState} from '../context/UsersContext'
-
-// async function loadUserList() {
-//   const result = await fetch('http://localhost:3011/userlist')
-//     .then(res => res.json())
-//     .catch(err => console.log(err.message))
-//   console.log('loadUserList', result)
-// }
+import ChatUser from './ChatUser'
 
 export default function ChatUsers() {
 
@@ -27,7 +21,8 @@ export default function ChatUsers() {
 
   return (
     <div className='ChatUsers'>
-      {usersState.filter && usersState.filter(chan => chan.name === storedValue.channel).map((chan, index) => <div key={index}>{chan.user}</div>)}
+      {usersState.filter && usersState.filter(chan => chan.name === storedValue.channel)
+        .map((chan, index) => <ChatUser key={index} user={chan.user} />)}
     </div>
   )
 }
