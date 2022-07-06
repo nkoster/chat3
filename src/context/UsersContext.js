@@ -1,16 +1,8 @@
-import {useState, createContext, useContext} from 'react'
+import {useState, createContext, useContext, useEffect} from 'react'
+import {useWebsocket} from './WebsocketContext'
 
 const initialState = {
-  userList: [
-    {
-      id: '1',
-      name: 'niels'
-    },
-    {
-      id: '2',
-      name: 'gijs'
-    }
-  ]
+  userList: []
 }
 
 const UsersContext = createContext(initialState)
@@ -24,7 +16,17 @@ export function useUsersState() {
 }
 
 export default function UsersStateProvider({children}) {
+
   const [usersState, setUsersState] = useState(initialState)
+  const {websocket} = useWebsocket()
+  useEffect(() => {
+    websocket.on('newlist', l => {
+      console.log('usersState', usersState)
+      console.log('newlist', l)
+      setUsersState(l)
+    })
+    return () => websocket.off('newlist')
+  }, [])
 
   function updateUsers(state) {
     setUsersState(state)
