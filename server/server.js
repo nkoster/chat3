@@ -22,33 +22,17 @@ const fs = require('fs')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
-// let globalChannels = []
 let channels = []
-
 let users = require('./db.json')
-// const {response} = require('express')
-
 let refreshTokens = []
 
 app.use(cors())
 
 io.on('connection', socket => {
+
   console.log('new websocket connection', socket.handshake.auth)
   socket.handshake.auth.forEach(room => socket.join(room))
-  // channels = new Proxy(globalChannels, {
-  //   deleteProperty: function(target, property) {
-  //     console.log("Deleted %s", property)
-  //     io.emit('newlist', channels)
-  //     return true
-  //   },
-  //   set: function(target, property, value, receiver) {
-  //     target[property] = value
-  //     console.log("Set %s to %o", property, value)
-  //     io.emit('newlist', channels)
-  //     return true
-  //   }
-  // })
-  io.emit('newlist', channels)
+
   socket.on('join', channel => {
     let data = ''
     try {
@@ -59,10 +43,11 @@ io.on('connection', socket => {
           channels = channels.filter(chan => {
             return !(chan.name === channel && chan.user === socket.username)
           })
-          io.emit('newlist', channels)
+          io.emit('newlist', channels.filter(chan => chan.name === channel) )
         }
         const jwtData = jwt.decode(channel.token.accessToken, {})
         socket.username = jwtData.username
+        socket.channel = channel.channel
         // Next will prevent duplicates in the channel list
         channels = channels.filter(chan => {
           return JSON.stringify({ name: channel.channel, user: socket.username} ) !==
@@ -70,40 +55,49 @@ io.on('connection', socket => {
         })
         channels.push({
           name: channel.channel,
-          user: socket.username
+          user: socket.username,
+          // socketId: socket.id
         })
-        io.emit('newlist', channels)
+        io.emit('newlist', channels.filter(chan => chan.name === channel.channel))
       })
     } catch {
       console.log('ERROR')
     }
     console.log('join', channel.channel, data)
   })
-  socket.on('message', msg => {
-    // io.emit('broadcast', msg)
-    // console.log('MSG', msg)
-    // if (!socket.username) {
-    //   socket.emit('expired')
-    //   channels = channels.filter(chan => {
-    //     return !(chan.name === msg.channel && chan.user === data.username)
-    //   })
-    //   io.emit('newlist', channels)
-    // }
 
-    console.log(socket.username, msg, socket.rooms.has(msg.channel))
-    if (socket.rooms.has(msg.channel)) {
-      io.to(msg.channel).emit('broadcast', msg)
+  socket.on('message', msg => {
+    if (msg.data) {
+      console.log(socket.username, msg, socket.rooms.has(msg.channel))
+      if (socket.rooms.has(msg.channel)) {
+        io.to(msg.channel).emit('broadcast', {...msg, user: socket.username})
+      }
     }
   })
+
   socket.on('logout', data => {
     console.log('LOGOUT', data)
     console.log('CHANNELS', channels)
     channels = channels.filter(chan => {
       return !(chan.name === data.channel && chan.user === data.username)
     })
-    io.emit('newlist', channels)
+    io.emit('newlist', channels.filter(chan => chan.name === data.channel))
   })
 })
+
+setInterval(() => {
+  const aap = Array.from(io.sockets.sockets).map(socket => {
+    return {
+      name: socket[1].channel,
+      user: socket[1].username
+    }
+  })
+  .filter(item => {
+    return item.name && item.user
+  })
+  channels = [...aap]
+  // console.log(aap)
+}, 3000)
 
 app.use(express.json())
 
@@ -171,7 +165,7 @@ app.post('/adduser', async (req, res) => {
 
 app.use('/verify', (req, res) => {
   const token = req.body.token
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, err => {
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, {},err => {
     if (err) {
       return res.status(200).send({ result: false })
     }
@@ -215,7 +209,7 @@ app.post('/deleteuser', (req, res) => {
 
 function generateAccessToken(user) {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: '10m'
+    expiresIn: '120m'
   })
 }
 
