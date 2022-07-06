@@ -2,6 +2,7 @@ import {useEffect, useRef} from 'react'
 import './ChatLines.css'
 import {useChatState} from '../context/ChatContext'
 import {useWebsocket} from '../context/WebsocketContext'
+import ChatLine from './ChatLine'
 
 export default function ChatLines() {
 
@@ -14,7 +15,7 @@ export default function ChatLines() {
       // console.log(msg)
       setChatState({
         ...chatState,
-        chatLines: [...chatState.chatLines, msg.data],
+        chatLines: [...chatState.chatLines, msg],
       })
     })
   }, [chatState])
@@ -26,7 +27,7 @@ export default function ChatLines() {
   return (
     <div className='ChatLines' ref={ref}>
       {chatState.chatLines.reverse().map((line, key) => {
-        return <div className='ChatLine' key={key}>{line}</div>
+        return <ChatLine key={key} line={line} />
       })}
     </div>
   )
