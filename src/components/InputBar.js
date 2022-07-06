@@ -10,7 +10,7 @@ export default function InputBar() {
   const {storedValue} = useLocalStorage('userInfo')
 
   function handleInput(e) {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && e.target.value) {
       setChatState({
         ...chatState,
         message: ''
