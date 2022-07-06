@@ -15,7 +15,7 @@ export function useWebsocket() {
 export default function WebsocketProvider({children}) {
   const {storedValue} = useLocalStorage('userInfo')
   const socket = io('ws://localhost:3011', {
-    auth: [storedValue.channel],
+    auth: [storedValue?.channel],
   })
   const websocket = useRef(socket)
   return (
