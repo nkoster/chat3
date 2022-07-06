@@ -4,7 +4,8 @@ function ChatLine({key, line}) {
   return (
     <div className='ChatLine'>
       <div className='ChatLineUser'>{line.user}:</div>
-      <div key={key}>{line.data}</div>
+      <div className='ChatLineData' key={key}>{line.data}</div>
+      <div className='ChatLineTime'>{line.time}</div>
     </div>
   )
 }
