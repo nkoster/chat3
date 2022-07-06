@@ -35,6 +35,7 @@ function App() {
   }
 
   const logout = () => {
+    websocket.emit('logout', storedValue)
     setLocalToken(null)
     setToken(null)
   }
