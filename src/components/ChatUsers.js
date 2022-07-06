@@ -22,7 +22,7 @@ export default function ChatUsers() {
   return (
     <div className='ChatUsers'>
       {usersState.filter && usersState.filter(chan => chan.name === storedValue.channel)
-        .map((chan, index) => <ChatUser key={index} user={chan.user} />)}
+        .map((chan, index) => <ChatUser key={index} myKey={index} user={chan.user} />)}
     </div>
   )
 }

@@ -1,8 +1,9 @@
 import './ChatUser.css'
 
-function ChatUser({key, user}) {
+function ChatUser({myKey, user}) {
+  console.log('myKey', myKey)
   return (
-    <div key={key} className='ChatUser'>{user}</div>
+    <div key={myKey} className='ChatUser'>{user}</div>
   )
 }
 
