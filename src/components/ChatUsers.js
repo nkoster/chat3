@@ -17,7 +17,6 @@ export default function ChatUsers() {
     })
     return () => websocket.off('newlist')
   }, [])
-  console.log('usersState', usersState)
 
   return (
     <div className='ChatUsers'>

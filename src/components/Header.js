@@ -7,8 +7,6 @@ export default function Header({logout}) {
   const {chatState} = useChatState()
   const {storedValue} = useLocalStorage('userInfo')
   const {usersState} = useUsersState()
-  console.log('usersState', usersState)
-
   function handleOnClick() {
     logout()
   }
