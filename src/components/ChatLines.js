@@ -26,7 +26,7 @@ export default function ChatLines() {
 
   return (
     <div className='ChatLines' ref={ref}>
-      {chatState.chatLines.reverse().map((line, key) => {
+      {chatState.chatLines.map((line, key) => {
         return <ChatLine key={key} mykey={key} line={line} />
       })}
     </div>

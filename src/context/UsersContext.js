@@ -19,9 +19,10 @@ export default function UsersStateProvider({children}) {
 
   const [usersState, setUsersState] = useState(initialState)
   const {websocket} = useWebsocket()
+
   useEffect(() => {
     websocket.on('newlist', l => {
-      setUsersState(l)
+      setUsersState({...usersState, userList: [...l]})
     })
     return () => websocket.off('newlist')
   }, [])

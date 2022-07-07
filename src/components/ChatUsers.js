@@ -13,29 +13,34 @@ export default function ChatUsers() {
   const unique = useRef([])
 
   useEffect(() => {
+    console.log('New list received')
     websocket.on('newlist', l => {
-      setUsersState(l)
+      setUsersState({...usersState, userList: [...l]})
     })
     return () => websocket.off('newlist')
-  }, [])
+  }, [] )
 
   useEffect(() => {
     if (usersState.filter) {
-      unique.current = usersState.filter && usersState.filter(chan => chan.name === storedValue.channel)
-        .filter(chan => {
-          const isDup = unique.current.includes(chan.user)
-          if (!isDup) {
-            unique.current.push(chan)
-            return true
-          }
-          return false
-        })
+      if (usersState.filter.length > 2) {
+        unique.current = usersState.filter && usersState.filter(chan => chan.name === storedValue.channel)
+          .filter(chan => {
+            const isDup = unique.current.includes(chan.user)
+            if (!isDup) {
+              unique.current.push(chan)
+              return true
+            }
+            return false
+          })
+      } else {
+        unique.current = usersState
+      }
     }
   }, [usersState])
 
   return (
     <div className='ChatUsers'>
-      {unique.current.filter && unique.current.filter(chan => chan.name === storedValue.channel)
+      {usersState.userList && usersState.userList.filter(chan => chan.name === storedValue.channel)
         .map((chan, index) => <ChatUser key={index} myKey={index} user={chan.user} />)}
     </div>
   )

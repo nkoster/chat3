@@ -14,7 +14,7 @@ export default function Header({logout}) {
     <div className='Header'>
       <div>{storedValue.username}@{storedValue.channel}</div>
       <div>{chatState.chatLines.length} line{chatState.chatLines.length === 1 ? '' : 's'}</div>
-      <div>{usersState.length} user{usersState.length === 1 ? '' : 's'}</div>
+      <div>{usersState.userList.length} user{usersState.userList.length === 1 ? '' : 's'}</div>
       <button onClick={handleOnClick}>logout</button>
     </div>
   )
