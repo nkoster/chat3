@@ -1,9 +1,11 @@
 import {useState} from 'react'
 import './Login.css'
 import useLocalStorage from '../hooks/LocalStorage'
+import {getHostUrl} from '../util'
 
 async function loginUser(credentials) {
-  return fetch('http://localhost:3011/login', {
+  console.log('HOST URL', getHostUrl())
+  return fetch(`${getHostUrl()}/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
