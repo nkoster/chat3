@@ -33,6 +33,11 @@ app.use(express.static('public'))
 io.on('connection', socket => {
 
   console.log('new websocket connection', socket.handshake.auth)
+
+  if (socket.handshake.auth[0] === null) {
+    return
+  }
+
   socket.handshake.auth.forEach(room => socket.join(room))
 
   socket.on('join', channel => {
