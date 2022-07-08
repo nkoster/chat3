@@ -25,13 +25,20 @@ function App() {
   }, [token, setLocalToken])
 
   useEffect(() => {
-    if (token) websocket.emit('join', {
+    if (token && storedValue) websocket.emit('join', {
       token, channel: storedValue.channel
     })
   }, [storedValue])
 
   if (!token) {
     return <Login setToken={setToken}/>
+  }
+
+  if (!storedValue) {
+        setTimeout(() => {
+      window.location.href = '/'
+    }, 500)
+    return <h5>please wait...</h5>
   }
 
   const logout = () => {
