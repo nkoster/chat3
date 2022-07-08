@@ -7,13 +7,12 @@ export const uuid = () => {
     (Math.random() * Date.now()).toString(16).substr(0, 6)
 }
 
-
 export const getHostUrl = () => {
   const url = window.location.href
   const host = window.location.host
   const port = window.location.port
   const isHttps = url.includes('https:')
-  return port === '3000' ? 'http://localhost:3011' : `http${isHttps ? 's' : ''}://${host}`
+  return port === '3000' ? 'http://localhost:3012' : `http${isHttps ? 's' : ''}://${host}`
 }
 
 export const getHostWebsocketUrl = () => {
@@ -21,5 +20,5 @@ export const getHostWebsocketUrl = () => {
   const host = window.location.host
   const port = window.location.port
   const isHttps = url.includes('https:')
-  return port === '3000' ? 'ws://localhost:3011' : `ws${isHttps ? 's' : ''}://${host}`
+  return port === '3000' ? 'ws://localhost:3012' : `ws${isHttps ? 's' : ''}://${host}`
 }
