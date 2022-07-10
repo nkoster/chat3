@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import {Link} from 'react-router-dom'
 import './Login.css'
 import useLocalStorage from '../hooks/LocalStorage'
 import {getHostUrl} from '../util'
@@ -16,6 +17,7 @@ async function loginUser(credentials) {
 }
 
 function Login({setToken}) {
+
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
   const [channel, setChannel] = useState()
@@ -51,6 +53,7 @@ function Login({setToken}) {
         </label>
         <div>
           <button type="submit">Submit</button>
+          <Link to='/signup'>Signup</Link>
         </div>
       </form>
     </div>
