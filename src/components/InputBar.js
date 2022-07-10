@@ -25,7 +25,7 @@ export default function InputBar() {
 
   return (
     <div className='InputBar'>
-      <input type='text' onKeyDown={handleInput} value={chatText} onChange={handleOnChange}/>
+      <div className='icon'>»</div><input type='text' onKeyDown={handleInput} value={chatText} onChange={handleOnChange}/>
     </div>
   )
 }
