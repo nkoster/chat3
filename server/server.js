@@ -25,6 +25,7 @@ const jwt = require('jsonwebtoken')
 let channels = []
 let users = require('./db.json')
 let refreshTokens = []
+let storedDay = new Date().getDate()
 
 app.use(cors())
 
@@ -72,18 +73,14 @@ io.on('connection', socket => {
     console.log('join', channel.channel, data)
   })
 
-
   socket.on('message', msg => {
     if (msg.data) {
       console.log(socket.username, msg, socket.rooms.has(msg.channel))
-      const d = new Date()
-      const timeStamp = `${d.getHours()}:${d.getMinutes() < 10 ? '0' : ''}${
-        d.getMinutes()}.${d.getSeconds() < 10 ? '0' : ''}${d.getSeconds()}`
       if (socket.rooms.has(msg.channel)) {
         io.to(msg.channel).emit('broadcast', {
           ...msg,
           user: socket.username,
-          time: timeStamp
+          time: timestamp(new Date())
         })
       }
     }
@@ -97,7 +94,22 @@ io.on('connection', socket => {
     })
     io.emit('newlist', channels.filter(chan => chan.name === data.channel))
   })
+
 })
+
+function timestamp(d) {
+  return `${d.getHours()}:${d.getMinutes() < 10 ? '0' : ''}${
+    d.getMinutes()}.${d.getSeconds() < 10 ? '0' : ''}${d.getSeconds()}`
+}
+
+function dayChanged() {
+  const currentDay = new Date().getDate()
+  if (currentDay !== storedDay) {
+    storedDay = currentDay
+    return true
+  }
+  return false
+}
 
 setInterval(() => {
   const arr = Array.from(io.sockets.sockets).map(socket => {
@@ -110,7 +122,16 @@ setInterval(() => {
     return item.name && item.user
   })
   channels = [...arr]
-  // console.log(channels)
+  if (dayChanged()) {
+    const msg = {
+      data: 'day changed'
+    }
+    io.emit('broadcast', {
+      ...msg,
+      user: 'server',
+      time: timestamp(new Date())
+    })
+  }
 }, 3000)
 
 app.use(express.json())
