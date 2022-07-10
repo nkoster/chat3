@@ -8,6 +8,7 @@ import InputBar from './components/InputBar'
 import useLocalToken from './hooks/useLocalToken'
 import {useWebsocket} from './context/WebsocketContext'
 import useLocalStorage from './hooks/LocalStorage'
+import Signup from './components/Signup'
 
 function App() {
 
@@ -31,7 +32,14 @@ function App() {
   }, [storedValue])
 
   if (!token) {
-    return <Login setToken={setToken}/>
+    return (
+      <BrowserRouter>
+        <Routes>
+          <Route exact path='/' element={<Login setToken={setToken}/>}/>
+          <Route exact path='/signup' element={<Signup setToken={setToken}/>}/>
+        </Routes>
+      </BrowserRouter>
+    )
   }
 
   if (!storedValue) {
@@ -51,7 +59,7 @@ function App() {
     <div className='App'>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Chat logout={logout}/>}/>
+          <Route exact path='/' element={<Chat logout={logout}/>}/>
         </Routes>
       </BrowserRouter>
     </div>
